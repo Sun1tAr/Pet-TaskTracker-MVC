@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo List</title>
+</head>
+<body>
+
+<h2>
+    Актуальный список задач:
+</h2>
+
+<form th:action="@{/tasks/add}" method="get">
+    <input type="submit" value="Добавить задачу" class="button add">
+</form>
+
+<form method="get" th:action="@{/tasks}">
+    <div>
+        <label>Показать завершенные</label>
+        <input type="checkbox" name="showAll" th:checked="${showAll}">
+    </div>
+    <button type="submit">Применить</button>
+</form>
+
+<table th:if = "${!listOfTasks.isEmpty()}">
+    <tr>
+        <th>
+            Uid
+        </th>
+        <th>
+            Наименование
+        </th>
+        <th>
+            Срок выполнения
+        </th>
+        <th>
+            Оставшееся время
+        </th>
+        <th>
+            Описание
+        </th>
+        <th>
+            Статус
+        </th>
+        <th>
+            Операции
+        </th>
+    </tr>
+
+    <tr th:each="task : ${listOfTasks}"
+        th:if="${showAll} or (not ${task.isDone})"
+        th:classappend="${task.isDone} ? 'task-done' :
+                        (${dateUtils.daysUntil(task.dueDate)} < 0 ? 'task-expired' :
+                        (${!task.isDone} ? 'task-unDone'))">
+
+        <td th:text="${task.id}"></td>
+
+        <td th:text="${task.title}"></td>
+
+        <td th:text="${#temporals.format(task.dueDate, 'dd-MM-yyyy')}"></td>
+
+        <td>
+            <div th:if="${dateUtils.daysUntil(task.dueDate)} < 0">
+                Просрочено на
+                <span th:text="${T(java.lang.Math).abs(dateUtils.daysUntil(task.dueDate))}"/>
+                дней
+            </div>
+            <div th:if="${dateUtils.daysUntil(task.dueDate)} >= 0">
+                <span th:text="${dateUtils.daysUntil(task.dueDate)}"/>
+                дней до дедлайна
+            </div>
+
+        </td>
+
+        <td th:text="${task.description}"></td>
+
+
+        <div th:if="${task.isDone}">
+            <td>Выполнена</td>
+        </div>
+        <div th:unless="${task.isDone}">
+            <td>Не выполнена</td>
+        </div>
+
+        <td>
+            <form th:action="@{'/tasks/' + ${task.id}}" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Удалить" class="button delete">
+            </form>
+
+            <form th:action="@{'/tasks/' + ${task.id} + '/toggle'}" method="post">
+                <input type="hidden" name="_method" value="PUT">
+                <input type="submit" value="Изменить статус" class="button change">
+            </form>
+
+            <form th:action="@{'/tasks/' + ${task.id}}" method="get">
+                <input type="submit" value="Подробнее" class="button change">
+            </form>
+
+
+        </td>
+    </tr>
+</table>
+<div th:if = "${listOfTasks.isEmpty()}">
+    Список задач пуст!
+</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<form action="#" th:action="@{${variousPath}}" th:object="${currentTask}" method="post">
+    <input type="hidden" name="_method" th:unless="${variousPath == '/tasks/add'}" value="PUT">
+
+    <div th:unless="${variousPath == '/tasks/add'}">
+        <label>ID:</label>
+        <span th:text="*{id}"></span>
+    </div>
+
+    <div>
+        <label>Название</label>
+        <input type="text" th:field="*{title}"/>
+        <span th:if="${#fields.hasErrors('title')}"
+              th:errors="*{title}" class="error"></span>
+    </div>
+    <div>
+        <label>Описание</label>
+        <input type="text" th:field="*{description}"/>
+    </div>
+    <div>
+        <label>Срок выполнения</label>
+        <input type="date" id="dueDate" name="dueDate"
+               th:value="${currentTask.dueDate != null} ?
+               ${#temporals.format(currentTask.dueDate, 'yyyy-MM-dd')} : ''"
+               required
+               placeholder="dd-MM-yyyy"
+               pattern="\d{2}-\d{2}-\d{4}">
+
+        <span th:if="${#fields.hasErrors('dueDate')}"
+              th:errors="*{dueDate}" class="error"></span>
+    </div>
+    <div>
+        <label>Статус</label>
+        <input type="checkbox" th:field="*{isDone}"/>
+    </div>
+
+<input type="submit" value="Сохранить"/>
+</form>
+
+
+<form th:action="@{'/tasks/' + ${currentTask.id}}" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="Удалить" class="button delete">
+</form>
+
+
+</body>
+</html>
