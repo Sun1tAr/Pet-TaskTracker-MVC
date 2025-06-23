@@ -1,0 +1,134 @@
+/* Общие стили страницы */
+.tasks-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Заголовок */
+.tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #3498db;
+}
+
+/* Фильтры */
+.filter-form {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.filter-form label {
+    margin-right: 10px;
+    font-weight: 600;
+}
+
+/* Таблица */
+.tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.tasks-table th {
+    background-color: #3498db;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.tasks-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Стили строк */
+.task-done {
+    background-color: #d4edda !important;
+}
+
+.task-expired {
+    background-color: #f8d7da !important;
+}
+
+.task-unDone {
+    background-color: #fff8e1 !important;
+}
+
+/* Кнопки действий */
+.action-buttons form {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.delete {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete:hover {
+    background-color: #c0392b;
+}
+
+.change {
+    background-color: #f39c12;
+    color: white;
+}
+
+.change:hover {
+    background-color: #d35400;
+}
+
+.add {
+    background-color: #2ecc71;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+.add:hover {
+    background-color: #27ae60;
+}
+
+/* Сообщение о пустом списке */
+.empty-list {
+    text-align: center;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: #7f8c8d;
+    font-size: 18px;
+}
+
+/* Стили для дней до дедлайна */
+.days-remaining {
+    font-weight: bold;
+}
+
+.days-expired {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.days-ok {
+    color: #2ecc71;
+    font-weight: bold;
+}

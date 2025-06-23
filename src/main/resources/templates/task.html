@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
+    <link rel="stylesheet" href="/css/task.css">
 </head>
 <body>
 
-<form action="#" th:action="@{${variousPath}}" th:object="${currentTask}" method="post">
+<form action="#" th:action="@{${variousPath}}" th:object="${currentTask}" method="post" class="task-form">
     <input type="hidden" name="_method" th:unless="${variousPath == '/tasks/add'}" value="PUT">
 
-    <div th:unless="${variousPath == '/tasks/add'}">
+    <div th:unless="${variousPath == '/tasks/add'}" class="task-id">
         <label>ID:</label>
         <span th:text="*{id}"></span>
     </div>
@@ -45,13 +45,11 @@
     </div>
 
 <input type="submit" value="Сохранить"/>
+
+
 </form>
 
 
-<form th:action="@{'/tasks/' + ${currentTask.id}}" method="post">
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="submit" value="Удалить" class="button delete">
-</form>
 
 
 </body>

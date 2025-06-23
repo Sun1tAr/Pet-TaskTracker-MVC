@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>ToDo List</title>
+    <link rel="stylesheet" href="/css/tasks.css">
 </head>
 <body>
-
+<div class="tasks-container">
+<div class="tasks-header">
 <h2>
     Актуальный список задач:
 </h2>
@@ -13,7 +15,7 @@
 <form th:action="@{/tasks/add}" method="get">
     <input type="submit" value="Добавить задачу" class="button add">
 </form>
-
+</div>
 <form method="get" th:action="@{/tasks}">
     <div>
         <label>Показать завершенные</label>
@@ -101,8 +103,9 @@
         </td>
     </tr>
 </table>
-<div th:if = "${listOfTasks.isEmpty()}">
+<div th:if = "${listOfTasks.isEmpty()}" class="empty-list">
     Список задач пуст!
+</div>
 </div>
 </body>
 </html>
