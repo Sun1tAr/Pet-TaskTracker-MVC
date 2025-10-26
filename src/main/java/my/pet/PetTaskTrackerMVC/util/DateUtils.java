@@ -1,4 +1,4 @@
-package my.learn.PetTaskTrackerMVC.util;
+package my.pet.PetTaskTrackerMVC.util;
 
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,8 @@
-package my.learn.PetTaskTrackerMVC.service;
+package my.pet.PetTaskTrackerMVC.service;
 
-import my.learn.PetTaskTrackerMVC.entity.Task;
-import my.learn.PetTaskTrackerMVC.interfaces.TaskDao;
-import my.learn.PetTaskTrackerMVC.interfaces.TaskService;
+import my.pet.PetTaskTrackerMVC.entity.Task;
+import my.pet.PetTaskTrackerMVC.interfaces.TaskDao;
+import my.pet.PetTaskTrackerMVC.interfaces.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

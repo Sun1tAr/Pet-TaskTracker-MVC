@@ -1,4 +1,4 @@
-package my.learn.PetTaskTrackerMVC;
+package my.pet.PetTaskTrackerMVC;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход в систему - ToDo List</title>
+    <link rel="stylesheet" href="/css/tasks.css">
+    <style>
+        .auth-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .auth-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .auth-button:hover {
+            background-color: #45a049;
+        }
+
+        .auth-links {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .auth-links a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #c62828;
+            margin-bottom: 20px;
+        }
+
+        .success-message {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .remember-me input {
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="tasks-container">
+    <div class="auth-container">
+        <!-- Заголовок -->
+        <div class="auth-header">
+            <h1>🔐 Вход в систему</h1>
+            <p>Войдите в ваш аккаунт ToDo List</p>
+        </div>
+
+        <!-- Сообщение об ошибке -->
+        <div th:if="${param.error}" class="error-message">
+            ❌ Неверное имя пользователя или пароль
+        </div>
+
+        <!-- Сообщение о выходе -->
+        <div th:if="${param.logout}" class="success-message">
+            ✅ Вы успешно вышли из системы
+        </div>
+
+        <!-- Сообщение об истекшей сессии -->
+        <div th:if="${param.expired}" class="error-message">
+            ⏰ Ваша сессия истекла. Пожалуйста, войдите снова.
+        </div>
+
+        <!-- Форма логина -->
+        <form class="auth-form" th:action="@{/auth/login}" method="post">
+            <div class="form-group">
+                <label for="username">👤 Имя пользователя:</label>
+                <input type="text" id="username" name="username" required
+                       placeholder="Введите ваш username">
+            </div>
+
+            <div class="form-group">
+                <label for="password">🔒 Пароль:</label>
+                <input type="password" id="password" name="password" required
+                       placeholder="Введите ваш пароль">
+            </div>
+
+            <div class="remember-me">
+                <input type="checkbox" id="remember-me" name="remember-me">
+                <label for="remember-me">Запомнить меня</label>
+            </div>
+
+            <button type="submit" class="auth-button">Войти в систему</button>
+        </form>
+
+        <!-- Ссылки -->
+        <div class="auth-links">
+            <p>Еще нет аккаунта? <a th:href="@{/auth/register}">Зарегистрируйтесь</a></p>
+            <p><a th:href="@{/}">← Вернуться на главную</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

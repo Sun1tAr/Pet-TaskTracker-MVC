@@ -1,10 +1,11 @@
-package my.learn.PetTaskTrackerMVC.entity;
+package my.pet.PetTaskTrackerMVC.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,8 +14,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "tasks")
 @NoArgsConstructor @AllArgsConstructor
+@Data
 public class Task {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +24,11 @@ public class Task {
     @Column
     @NotBlank(message = "Название не может быть пустым")
     private String title;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column
     private String description;

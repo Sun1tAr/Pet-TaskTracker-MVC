@@ -1,7 +1,7 @@
-package my.learn.PetTaskTrackerMVC.repository;
+package my.pet.PetTaskTrackerMVC.repository;
 
-import my.learn.PetTaskTrackerMVC.entity.Task;
-import my.learn.PetTaskTrackerMVC.interfaces.TaskDao;
+import my.pet.PetTaskTrackerMVC.entity.Task;
+import my.pet.PetTaskTrackerMVC.interfaces.TaskDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

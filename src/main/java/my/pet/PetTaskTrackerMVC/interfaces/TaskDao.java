@@ -1,4 +1,4 @@
-package my.learn.PetTaskTrackerMVC.interfaces;
+package my.pet.PetTaskTrackerMVC.interfaces;
 
 public interface TaskDao extends TaskCrudOperations {
 }

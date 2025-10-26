@@ -1,7 +1,7 @@
-package my.learn.PetTaskTrackerMVC.controller;
+package my.pet.PetTaskTrackerMVC.controller;
 
-import my.learn.PetTaskTrackerMVC.entity.Task;
-import my.learn.PetTaskTrackerMVC.service.TaskServiceImpl;
+import my.pet.PetTaskTrackerMVC.entity.Task;
+import my.pet.PetTaskTrackerMVC.service.TaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

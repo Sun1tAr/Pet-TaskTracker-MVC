@@ -1,8 +1,8 @@
-package my.learn.PetTaskTrackerMVC.controller;
+package my.pet.PetTaskTrackerMVC.controller;
 
-import my.learn.PetTaskTrackerMVC.entity.Task;
-import my.learn.PetTaskTrackerMVC.service.TaskServiceImpl;
-import my.learn.PetTaskTrackerMVC.util.DateUtils;
+import my.pet.PetTaskTrackerMVC.entity.Task;
+import my.pet.PetTaskTrackerMVC.service.TaskServiceImpl;
+import my.pet.PetTaskTrackerMVC.util.DateUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,7 +67,7 @@ public class TaskController {
         }
     }
 
-    //    Запрос на добавление изменяемой задачи в модель
+    //   Запрос на добавление изменяемой задачи в модель
     @GetMapping("/{id}")
     public String changeTask(Model model, @PathVariable("id") long taskId) {
         Task task = taskService.getTaskById(taskId);
