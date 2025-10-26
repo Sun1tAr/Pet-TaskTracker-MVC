@@ -1,6 +1,6 @@
-package com.example.demo.interfaces;
+package my.learn.PetTaskTrackerMVC.interfaces;
 
-import com.example.demo.entity.Task;
+import my.learn.PetTaskTrackerMVC.entity.Task;
 
 public interface TaskService extends TaskCrudOperations{
 

@@ -8,11 +8,11 @@
         <version>3.5.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.example</groupId>
-    <artifactId>demo</artifactId>
+    <groupId>my.learn</groupId>
+    <artifactId>Pet-TaskTracker-MVC</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
-    <description>demo</description>
+    <name>Pet-TaskTracker-MVC</name>
+    <description>Pet-TaskTracker-MVC</description>
     <url/>
     <licenses>
         <license/>

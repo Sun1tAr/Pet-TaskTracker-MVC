@@ -1,8 +1,8 @@
-package com.example.demo.controller;
+package my.learn.PetTaskTrackerMVC.controller;
 
-import com.example.demo.entity.Task;
-import com.example.demo.service.TaskServiceImpl;
-import com.example.demo.util.DateUtils;
+import my.learn.PetTaskTrackerMVC.entity.Task;
+import my.learn.PetTaskTrackerMVC.service.TaskServiceImpl;
+import my.learn.PetTaskTrackerMVC.util.DateUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

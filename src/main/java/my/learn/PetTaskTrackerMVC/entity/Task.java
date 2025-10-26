@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package my.learn.PetTaskTrackerMVC.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;

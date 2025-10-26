@@ -1,14 +1,11 @@
-package com.example.demo.repository;
+package my.learn.PetTaskTrackerMVC.repository;
 
-import com.example.demo.entity.Task;
-import com.example.demo.interfaces.TaskDao;
-import jakarta.annotation.PostConstruct;
+import my.learn.PetTaskTrackerMVC.entity.Task;
+import my.learn.PetTaskTrackerMVC.interfaces.TaskDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository

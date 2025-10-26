@@ -1,12 +1,11 @@
-package com.example.demo.controller;
+package my.learn.PetTaskTrackerMVC.controller;
 
-import com.example.demo.entity.Task;
-import com.example.demo.service.TaskServiceImpl;
+import my.learn.PetTaskTrackerMVC.entity.Task;
+import my.learn.PetTaskTrackerMVC.service.TaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController

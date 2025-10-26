@@ -1,8 +1,8 @@
-package com.example.demo.service;
+package my.learn.PetTaskTrackerMVC.service;
 
-import com.example.demo.entity.Task;
-import com.example.demo.interfaces.TaskDao;
-import com.example.demo.interfaces.TaskService;
+import my.learn.PetTaskTrackerMVC.entity.Task;
+import my.learn.PetTaskTrackerMVC.interfaces.TaskDao;
+import my.learn.PetTaskTrackerMVC.interfaces.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
