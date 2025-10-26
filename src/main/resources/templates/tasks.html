@@ -1,111 +1,442 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ToDo List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List - Мои задачи</title>
     <link rel="stylesheet" href="/css/tasks.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --border: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .tasks-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .tasks-header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .tasks-header h2 {
+            color: var(--dark);
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-section label {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .filter-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .apply-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .apply-btn:hover {
+            background: #3a56d4;
+            transform: translateY(-2px);
+        }
+
+        .tasks-table {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f8f9ff;
+        }
+
+        /* Стили статусов задач */
+        .task-done {
+            background: #f0fff4 !important;
+            opacity: 0.8;
+        }
+
+        .task-expired {
+            background: #fff5f5 !important;
+            border-left: 4px solid var(--danger);
+        }
+
+        .task-unDone {
+            background: #fffaf0 !important;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-overdue {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .time-remaining {
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .time-normal {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .time-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .time-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .actions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 150px;
+        }
+
+        .action-form {
+            margin: 0;
+        }
+
+        .button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .button.add {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            font-size: 1rem;
+        }
+
+        .button.add:hover {
+            background: #3a56d4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        .button.delete {
+            background: #ef4444;
+            color: white;
+        }
+
+        .button.delete:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .button.change {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .button.change:hover {
+            background: #7c3aed;
+            transform: translateY(-1px);
+        }
+
+        .button.details {
+            background: #06b6d4;
+            color: white;
+        }
+
+        .button.details:hover {
+            background: #0891b2;
+            transform: translateY(-1px);
+        }
+
+        .empty-list {
+            background: white;
+            padding: 60px 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            color: #6b7280;
+            font-size: 1.2rem;
+        }
+
+        .empty-list:before {
+            content: "📝";
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .task-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .task-id {
+            color: #9ca3af;
+            font-size: 0.8rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .tasks-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+
+            .actions-container {
+                min-width: 120px;
+            }
+
+            .button {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
 </head>
 <body>
 <div class="tasks-container">
-<div class="tasks-header">
-<h2>
-    Актуальный список задач:
-</h2>
-
-<form th:action="@{/tasks/add}" method="get">
-    <input type="submit" value="Добавить задачу" class="button add">
-</form>
-</div>
-<form method="get" th:action="@{/tasks}">
-    <div>
-        <label>Показать завершенные</label>
-        <input type="checkbox" name="showAll" th:checked="${showAll}">
+    <!-- Заголовок и кнопка добавления -->
+    <div class="tasks-header">
+        <h2>🎯 Актуальный список задач</h2>
+        <form th:action="@{/tasks/add}" method="get">
+            <input type="submit" value="➕ Добавить задачу" class="button add">
+        </form>
     </div>
-    <button type="submit">Применить</button>
-</form>
 
-<table th:if = "${!listOfTasks.isEmpty()}">
-    <tr>
-        <th>
-            Uid
-        </th>
-        <th>
-            Наименование
-        </th>
-        <th>
-            Срок выполнения
-        </th>
-        <th>
-            Оставшееся время
-        </th>
-        <th>
-            Описание
-        </th>
-        <th>
-            Статус
-        </th>
-        <th>
-            Операции
-        </th>
-    </tr>
-
-    <tr th:each="task : ${listOfTasks}"
-        th:if="${showAll} or (not ${task.isDone})"
-        th:classappend="${task.isDone} ? 'task-done' :
-                        (${dateUtils.daysUntil(task.dueDate)} < 0 ? 'task-expired' :
-                        (${!task.isDone} ? 'task-unDone'))">
-
-        <td th:text="${task.id}"></td>
-
-        <td th:text="${task.title}"></td>
-
-        <td th:text="${#temporals.format(task.dueDate, 'dd-MM-yyyy')}"></td>
-
-        <td>
-            <div th:if="${dateUtils.daysUntil(task.dueDate)} < 0">
-                Просрочено на
-                <span th:text="${T(java.lang.Math).abs(dateUtils.daysUntil(task.dueDate))}"/>
-                дней
+    <!-- Фильтр -->
+    <div class="filter-section">
+        <form method="get" th:action="@{/tasks}" class="filter-form">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="checkbox" name="showAll" th:checked="${showAll}" id="showAll" class="filter-checkbox">
+                <label for="showAll">Показать завершенные задачи</label>
+                <button type="submit" class="apply-btn">Применить</button>
             </div>
-            <div th:if="${dateUtils.daysUntil(task.dueDate)} >= 0">
-                <span th:text="${dateUtils.daysUntil(task.dueDate)}"/>
-                дней до дедлайна
-            </div>
+        </form>
+    </div>
 
-        </td>
+    <!-- Таблица задач -->
+    <div class="tasks-table" th:if="${!listOfTasks.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Задача</th>
+                <th>Срок выполнения</th>
+                <th>Оставшееся время</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="task : ${listOfTasks}"
+                th:if="${showAll} or (not ${task.isDone})"
+                th:classappend="${task.isDone} ? 'task-done' :
+                                    (${dateUtils.daysUntil(task.dueDate)} < 0 ? 'task-expired' :
+                                    (${!task.isDone} ? 'task-unDone'))">
 
-        <td th:text="${task.description}"></td>
+                <!-- ID -->
+                <td>
+                    <span class="task-id" th:text="${task.id}"></span>
+                </td>
 
+                <!-- Название и описание -->
+                <td>
+                    <div class="task-title" th:text="${task.title}"></div>
+                    <div class="task-description" th:text="${task.description}"></div>
+                </td>
 
-        <div th:if="${task.isDone}">
-            <td>Выполнена</td>
-        </div>
-        <div th:unless="${task.isDone}">
-            <td>Не выполнена</td>
-        </div>
+                <!-- Срок выполнения -->
+                <td>
+                    <strong th:text="${#temporals.format(task.dueDate, 'dd.MM.yyyy')}"></strong>
+                </td>
 
-        <td>
-            <form th:action="@{'/tasks/' + ${task.id}}" method="post">
-                <input type="hidden" name="_method" value="DELETE">
-                <input type="submit" value="Удалить" class="button delete">
-            </form>
+                <!-- Оставшееся время -->
+                <td>
+                    <div th:if="${dateUtils.daysUntil(task.dueDate)} < 0"
+                         class="time-remaining time-danger">
+                        ⚠️ Просрочено на
+                        <span th:text="${T(java.lang.Math).abs(dateUtils.daysUntil(task.dueDate))}"/>
+                        д.
+                    </div>
+                    <div th:if="${dateUtils.daysUntil(task.dueDate)} >= 0 && ${dateUtils.daysUntil(task.dueDate)} <= 3"
+                         class="time-remaining time-warning">
+                        ⏳ Осталось
+                        <span th:text="${dateUtils.daysUntil(task.dueDate)}"/>
+                        д.
+                    </div>
+                    <div th:if="${dateUtils.daysUntil(task.dueDate)} > 3"
+                         class="time-remaining time-normal">
+                        📅 Осталось
+                        <span th:text="${dateUtils.daysUntil(task.dueDate)}"/>
+                        д.
+                    </div>
+                </td>
 
-            <form th:action="@{'/tasks/' + ${task.id} + '/toggle'}" method="post">
-                <input type="hidden" name="_method" value="PUT">
-                <input type="submit" value="Изменить статус" class="button change">
-            </form>
+                <!-- Статус -->
+                <td>
+                        <span th:if="${task.isDone}"
+                              class="status-badge status-completed">
+                            ✅ Выполнена
+                        </span>
+                    <span th:unless="${task.isDone}"
+                          class="status-badge status-pending">
+                            ⏳ В работе
+                        </span>
+                    <span th:if="${dateUtils.daysUntil(task.dueDate)} < 0 and not ${task.isDone}"
+                          class="status-badge status-overdue">
+                            ❌ Просрочена
+                        </span>
+                </td>
 
-            <form th:action="@{'/tasks/' + ${task.id}}" method="get">
-                <input type="submit" value="Подробнее" class="button change">
-            </form>
+                <!-- Действия -->
+                <td>
+                    <div class="actions-container">
+                        <form th:action="@{'/tasks/' + ${task.id} + '/toggle'}" method="post" class="action-form">
+                            <input type="hidden" name="_method" value="PUT">
+                            <input type="submit"
+                                   th:value="${task.isDone} ? '🔄 Возобновить' : '✅ Завершить'"
+                                   class="button change">
+                        </form>
 
+                        <form th:action="@{'/tasks/' + ${task.id}}" method="get" class="action-form">
+                            <input type="submit" value="✏️ Редактировать" class="button details">
+                        </form>
 
-        </td>
-    </tr>
-</table>
-<div th:if = "${listOfTasks.isEmpty()}" class="empty-list">
-    Список задач пуст!
-</div>
+                        <form th:action="@{'/tasks/' + ${task.id}}" method="post" class="action-form">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="submit" value="🗑️ Удалить" class="button delete">
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Сообщение о пустом списке -->
+    <div th:if="${listOfTasks.isEmpty()}" class="empty-list">
+        Список задач пуст!<br>
+        <small>Начните с добавления первой задачи</small>
+    </div>
 </div>
 </body>
 </html>

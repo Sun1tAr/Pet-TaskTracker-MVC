@@ -1,56 +1,359 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${variousPath == '/tasks/add'} ? 'Добавить задачу' : 'Редактировать задачу'">ToDo List</title>
     <link rel="stylesheet" href="/css/task.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --border: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: var(--dark);
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .form-header p {
+            color: #6b7280;
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .task-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"] {
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="date"]:focus {
+            border-color: var(--primary);
+            background: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .form-group input[type="text"]::placeholder {
+            color: #9ca3af;
+        }
+
+        .task-id {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .task-id label {
+            font-weight: 600;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .task-id span {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            background: #3a56d4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        .error {
+            color: var(--danger);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 5px;
+            padding: 8px 12px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error:before {
+            content: "⚠️";
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #3a56d4;
+            text-decoration: underline;
+        }
+
+        /* Стили для статуса чекбокса */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        .status-active {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-container {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 576px) {
+            .form-container {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            .form-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .submit-btn {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<form action="#" th:action="@{${variousPath}}" th:object="${currentTask}" method="post" class="task-form">
-    <input type="hidden" name="_method" th:unless="${variousPath == '/tasks/add'}" value="PUT">
-
-    <div th:unless="${variousPath == '/tasks/add'}" class="task-id">
-        <label>ID:</label>
-        <span th:text="*{id}"></span>
+<div class="form-container">
+    <!-- Заголовок формы -->
+    <div class="form-header">
+        <h1 th:text="${variousPath == '/tasks/add'} ? '➕ Добавить задачу' : '✏️ Редактировать задачу'">
+            Редактировать задачу
+        </h1>
+        <p th:text="${variousPath == '/tasks/add'} ?
+                    'Создайте новую задачу для вашего списка' :
+                    'Внесите изменения в существующую задачу'">
+            Внесите изменения в задачу
+        </p>
     </div>
 
-    <div>
-        <label>Название</label>
-        <input type="text" th:field="*{title}"/>
-        <span th:if="${#fields.hasErrors('title')}"
-              th:errors="*{title}" class="error"></span>
+    <!-- Форма -->
+    <form action="#" th:action="@{${variousPath}}" th:object="${currentTask}" method="post" class="task-form">
+        <input type="hidden" name="_method" th:unless="${variousPath == '/tasks/add'}" value="PUT">
+
+        <!-- ID задачи (только для редактирования) -->
+        <div th:unless="${variousPath == '/tasks/add'}" class="task-id">
+            <label>🔖 ID задачи:</label>
+            <span th:text="*{id}"></span>
+        </div>
+
+        <!-- Название задачи -->
+        <div class="form-group">
+            <label for="title">📝 Название задачи</label>
+            <input type="text" id="title" th:field="*{title}"
+                   placeholder="Введите краткое название задачи"
+                   maxlength="100"/>
+            <span th:if="${#fields.hasErrors('title')}"
+                  th:errors="*{title}" class="error"></span>
+        </div>
+
+        <!-- Описание задачи -->
+        <div class="form-group">
+            <label for="description">📄 Описание</label>
+            <input type="text" id="description" th:field="*{description}"
+                   placeholder="Добавьте подробное описание задачи (необязательно)"
+                   maxlength="500"/>
+        </div>
+
+        <!-- Срок выполнения -->
+        <div class="form-group">
+            <label for="dueDate">📅 Срок выполнения</label>
+            <input type="date" id="dueDate" th:field="*{dueDate}"
+                   th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+                   required/>
+            <span th:if="${#fields.hasErrors('dueDate')}"
+                  th:errors="*{dueDate}" class="error"></span>
+        </div>
+
+        <!-- Статус выполнения -->
+        <div class="checkbox-group">
+            <input type="checkbox" id="isDone" th:field="*{isDone}"/>
+            <label for="isDone">
+                Статус выполнения
+                <span class="status-indicator"
+                      th:classappend="${currentTask.isDone} ? 'status-completed' : 'status-active'"
+                      th:text="${currentTask.isDone} ? 'Завершена' : 'Активна'">
+                    Активна
+                </span>
+            </label>
+        </div>
+
+        <!-- Кнопка отправки -->
+        <button type="submit" class="submit-btn">
+            <span th:text="${variousPath == '/tasks/add'} ? '💾 Создать задачу' : '💾 Сохранить изменения'">
+                Сохранить
+            </span>
+        </button>
+    </form>
+
+    <!-- Футер с ссылкой назад -->
+    <div class="form-footer">
+        <a th:href="@{/tasks}" class="back-link">← Вернуться к списку задач</a>
     </div>
-    <div>
-        <label>Описание</label>
-        <input type="text" th:field="*{description}"/>
-    </div>
-    <div>
-        <label>Срок выполнения</label>
-        <input type="date" id="dueDate" name="dueDate"
-               th:value="${currentTask.dueDate != null} ?
-               ${#temporals.format(currentTask.dueDate, 'yyyy-MM-dd')} : ''"
-               required
-               placeholder="dd-MM-yyyy"
-               pattern="\d{2}-\d{2}-\d{4}">
+</div>
 
-        <span th:if="${#fields.hasErrors('dueDate')}"
-              th:errors="*{dueDate}" class="error"></span>
-    </div>
-    <div>
-        <label>Статус</label>
-        <input type="checkbox" th:field="*{isDone}"/>
-    </div>
+<script>
+    // Установка минимальной даты как сегодняшней
+    document.addEventListener('DOMContentLoaded', function() {
+        const dueDateInput = document.getElementById('dueDate');
+        if (!dueDateInput.value) {
+            // Устанавливаем сегодняшнюю дату как значение по умолчанию для новых задач
+            const today = new Date().toISOString().split('T')[0];
+            dueDateInput.value = today;
+        }
 
-<input type="submit" value="Сохранить"/>
+        // Динамическое обновление статуса чекбокса
+        const statusCheckbox = document.getElementById('isDone');
+        const statusIndicator = document.querySelector('.status-indicator');
 
-
-</form>
-
-
-
-
+        statusCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                statusIndicator.textContent = 'Завершена';
+                statusIndicator.className = 'status-indicator status-completed';
+            } else {
+                statusIndicator.textContent = 'Активна';
+                statusIndicator.className = 'status-indicator status-active';
+            }
+        });
+    });
+</script>
 </body>
 </html>

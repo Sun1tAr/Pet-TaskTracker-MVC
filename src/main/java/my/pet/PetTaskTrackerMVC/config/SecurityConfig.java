@@ -39,7 +39,7 @@ public class SecurityConfig {
                         // URL куда отправлять данные формы логина (обрабатывается Spring Security)
                         .loginProcessingUrl("/auth/login")
                         // Куда перенаправлять после успешного логина
-                        .defaultSuccessUrl("/dashboard")
+                        .defaultSuccessUrl("/tasks")
                         // Куда перенаправлять при ошибке логина
                         .failureUrl("/auth/login?error=true")
                         // Разрешить доступ к странице логина всем

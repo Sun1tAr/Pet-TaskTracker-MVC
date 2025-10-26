@@ -1,5 +1,6 @@
 package my.pet.PetTaskTrackerMVC.controller;
 
+import my.pet.PetTaskTrackerMVC.dto.UserRegistrationDto;
 import my.pet.PetTaskTrackerMVC.entity.User;
 import my.pet.PetTaskTrackerMVC.interfaces.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;

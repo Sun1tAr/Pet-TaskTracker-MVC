@@ -1,4 +1,4 @@
-package my.pet.PetTaskTrackerMVC.controller;
+package my.pet.PetTaskTrackerMVC.dto;
 
 import lombok.Data;
 
