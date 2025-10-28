@@ -1,5 +1,4 @@
-drop table if exists users;
-drop table if exists tasks;
+CREATE DATABASE task_tracker;
 
 create table users (
                        id bigserial primary key,
