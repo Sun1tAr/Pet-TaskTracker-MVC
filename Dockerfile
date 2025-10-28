@@ -1,14 +1,13 @@
-# Базовый образ
-FROM openjdk:17-jdk-slim
-
-# Рабочая директория
+# Stage 1: сборка с Maven и Java 21
+FROM maven:3.9.6-amazoncorretto-21 AS builder
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Копируем JAR (замени на имя твоего файла)
-COPY target/*.jar pet-task_tracker-mvc.jar
-
-# Открываем порт
-EXPOSE 8081
-
-# Команда запуска
-ENTRYPOINT ["java", "-jar", "pet-task_tracker-mvc.jar"]
+# Stage 2: запуск с Java 21
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
