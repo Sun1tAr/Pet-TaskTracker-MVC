@@ -1,9 +1,11 @@
 package my.pet.PetTaskTrackerMVC.repository;
 
 import my.pet.PetTaskTrackerMVC.entity.Task;
+import my.pet.PetTaskTrackerMVC.entity.User;
 import my.pet.PetTaskTrackerMVC.interfaces.TaskDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,21 +14,36 @@ import java.util.List;
 public class TaskDaoImpl implements TaskDao {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private final EntityManager entityManager;
 
-    @Override
-    public Task getTaskById(long id) {
-        return entityManager.find(Task.class, id);
+    public TaskDaoImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Override
-    public List<Task> getAllTasks() {
-        return entityManager.createQuery("from Task", Task.class).getResultList();
+    public Task getTaskById(long id, User user) {
+        Task task = entityManager.find(Task.class, id);
+        if (task.getUser().getId().equals(user.getId())) {
+            return task;
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public void deleteTaskById(long id) {
-    entityManager.remove(entityManager.find(Task.class, id));
+    public List<Task> getAllTasks(User user) {
+        List<Task> list = entityManager.createQuery("select t from Task t where t.user.id = :id", Task.class)
+                .setParameter("id", user.getId())
+                .getResultList();
+        return list;
+    }
+
+    @Override
+    public void deleteTaskById(long id, User user) {
+        Task task = entityManager.find(Task.class, id);
+        if (task.getUser().getId().equals(user.getId())) {
+            entityManager.remove(task);
+        }
     }
 
     @Override

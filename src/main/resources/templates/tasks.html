@@ -371,19 +371,24 @@
 
                 <!-- Оставшееся время -->
                 <td>
-                    <div th:if="${dateUtils.daysUntil(task.dueDate)} < 0"
+                    <!-- Просрочено -->
+                    <div th:if="${dateUtils.daysUntil(task.dueDate) lt 0}"
                          class="time-remaining time-danger">
                         ⚠️ Просрочено на
                         <span th:text="${T(java.lang.Math).abs(dateUtils.daysUntil(task.dueDate))}"/>
                         д.
                     </div>
-                    <div th:if="${dateUtils.daysUntil(task.dueDate)} >= 0 && ${dateUtils.daysUntil(task.dueDate)} <= 3"
+
+                    <!-- Срочно (0-3 дня) -->
+                    <div th:if="${dateUtils.daysUntil(task.dueDate) >= 0 and dateUtils.daysUntil(task.dueDate) <= 3}"
                          class="time-remaining time-warning">
                         ⏳ Осталось
                         <span th:text="${dateUtils.daysUntil(task.dueDate)}"/>
                         д.
                     </div>
-                    <div th:if="${dateUtils.daysUntil(task.dueDate)} > 3"
+
+                    <!-- Нормально (>3 дней) -->
+                    <div th:if="${dateUtils.daysUntil(task.dueDate) > 3}"
                          class="time-remaining time-normal">
                         📅 Осталось
                         <span th:text="${dateUtils.daysUntil(task.dueDate)}"/>
