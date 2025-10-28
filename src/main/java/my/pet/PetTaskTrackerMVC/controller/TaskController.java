@@ -26,7 +26,7 @@ public class TaskController {
         model.addAttribute("listOfTasks", allTasks);
         model.addAttribute("dateUtils", new DateUtils());
         model.addAttribute("showAll", showAll);
-        return "tasks";
+        return "tasks.html";
     }
 
     //    Удаление задачи по ID
@@ -53,14 +53,14 @@ public class TaskController {
         path.append("/add");
         model.addAttribute("variousPath", path.toString());
 
-        return "task";
+        return "task.html";
     }
 
     //    Запрос на добавление сущности в систему
     @PostMapping("/add")
     public String addTask(@Valid @ModelAttribute("currentTask") Task task, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "task";
+            return "task.html";
         } else {
             taskService.addTask(task);
             return "redirect:/tasks";
@@ -78,7 +78,7 @@ public class TaskController {
 
         model.addAttribute("variousPath", path.toString());
 
-        return "task";
+        return "task.html";
     }
 
     //    Запрос на изменение задачи
